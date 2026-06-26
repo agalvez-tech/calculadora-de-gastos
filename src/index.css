@@ -1,0 +1,40 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --orange: #cf731b;
+  --orange-light: #f5e6d3;
+  --orange-dark: #a85a14;
+  --black: #1a1a1a;
+  --gray-900: #2c2c2c;
+  --gray-700: #555;
+  --gray-500: #888;
+  --gray-200: #e8e5e0;
+  --gray-100: #f5f4f0;
+  --gray-50: #fafaf8;
+  --white: #ffffff;
+  --green: #3B6D11;
+  --green-bg: #EAF3DE;
+  --blue: #185FA5;
+  --blue-bg: #E6F1FB;
+  --amber-bg: #FAEEDA;
+  --amber: #633806;
+  --font: 'Montserrat', sans-serif;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--gray-100);
+  color: var(--black);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font-family: var(--font); cursor: pointer; }
+input, select { font-family: var(--font); }
+input[type=number]::-webkit-inner-spin-button { opacity: 1; }

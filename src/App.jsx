@@ -6,7 +6,7 @@ import ResultsPanel from './components/ResultsPanel.jsx'
 import { calcRegistro, calcITP, calcCuota, buildAmortRows } from './utils.js'
 
 const INITIAL_DATOS = {
-  precio: 250000,
+  precio: 0,
   tipoViv: 'segunda',
   uso: 'habitual',
   edad: 'normal',
@@ -18,8 +18,8 @@ const INITIAL_DATOS = {
 }
 
 const INITIAL_HIP = {
-  pctFinanciacion: 80,   // % sobre precio
-  capital: 200000,       // importe calculado
+  pctFinanciacion: 80,   // % sobre precio — vacío al inicio
+  capital: 0,       // importe calculado
   plazo: 30,
   presetId: 'fija_3.5',
   tin: 3.5,
@@ -71,7 +71,7 @@ export default function App() {
 
     const notaria = Math.min(Math.max(precio * 0.0007 + 400, 700), 2000)
     items.push({ nombre: 'Notaría — compraventa', detalle: 'Arancel oficial (RD 1426/1989)', importe: notaria, color: '#3B6D11' })
-    items.push({ nombre: 'Registro de la Propiedad', detalle: 'Arancel por tramos (RD 1427/1989)', importe: calcRegistro(precio), color: '#3B6D11' })
+    items.push({ nombre: 'Registro de la Propiedad', detalle: 'Estimación orientativa (varía según escritura)', importe: calcRegistro(precio), color: '#3B6D11' })
     items.push({ nombre: 'Gestoría / tramitación', detalle: 'Estimación media orientativa', importe: 400, color: '#185FA5' })
 
     if (pctInmo > 0) {

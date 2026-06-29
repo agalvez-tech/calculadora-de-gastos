@@ -7,25 +7,11 @@ export const fmtEurD = (n) =>
 
 export const fmtPct = (n, t) => ((n / t) * 100).toFixed(1) + '%'
 
-// ── Registro de la Propiedad (RD 1427/1989) ──────────────────────────────────
-export function calcRegistro(precio) {
-  const tramos = [
-    [6010.12,    0.02004],
-    [30050.61,   0.01668],
-    [60101.21,   0.01252],
-    [150253.03,  0.01003],
-    [601012.10,  0.00668],
-    [Infinity,   0.00501],
-  ]
-  let h = 0, anterior = 0
-  for (const [lim, rate] of tramos) {
-    const tramo = Math.min(precio, lim) - anterior
-    if (tramo <= 0) break
-    h += tramo * rate
-    anterior = lim
-    if (lim >= precio) break
-  }
-  return Math.min(Math.max(h, 24.04), 2181.67)
+// ── Registro de la Propiedad — estimación fija orientativa ───────────────────
+// El importe real varía según folios, copias y complejidad de la escritura.
+// Se usa 600 € como estimación orientativa estándar.
+export function calcRegistro() {
+  return 600
 }
 
 // ── ITP Comunitat Valenciana ──────────────────────────────────────────────────
@@ -60,15 +46,15 @@ export function buildAmortRows(capital, cuota, tinAnual, meses, tinPost, mesesFi
 
 // ── Preset tipos de interés ───────────────────────────────────────────────────
 export const TIPO_PRESETS = [
-  { id: 'fija_3.0',   label: 'Fija 3,00%',                    tin: 3.0,  tipo: 'fija' },
-  { id: 'fija_3.5',   label: 'Fija 3,50%',                    tin: 3.5,  tipo: 'fija' },
-  { id: 'fija_3.75',  label: 'Fija 3,75%',                    tin: 3.75, tipo: 'fija' },
-  { id: 'fija_4.0',   label: 'Fija 4,00%',                    tin: 4.0,  tipo: 'fija' },
-  { id: 'fija_4.5',   label: 'Fija 4,50%',                    tin: 4.5,  tipo: 'fija' },
-  { id: 'variable_075', label: 'Variable Euríbor + 0,75%',    tin: null, tipo: 'variable', diff: 0.75 },
-  { id: 'variable_090', label: 'Variable Euríbor + 0,90%',    tin: null, tipo: 'variable', diff: 0.90 },
-  { id: 'variable_100', label: 'Variable Euríbor + 1,00%',    tin: null, tipo: 'variable', diff: 1.00 },
-  { id: 'mixta_10_35',  label: 'Mixta 10a fijo 3,50% / Euríbor+0,90%', tin: 3.5, tipo: 'mixta', mesesFijo: 120, diff: 0.90 },
-  { id: 'mixta_5_30',   label: 'Mixta 5a fijo 3,00% / Euríbor+0,90%',  tin: 3.0, tipo: 'mixta', mesesFijo: 60,  diff: 0.90 },
-  { id: 'custom',     label: 'Personalizado…',                tin: null, tipo: 'custom' },
+  { id: 'fija_3.0',    label: 'Fija 3,00%',                              tin: 3.0,  tipo: 'fija' },
+  { id: 'fija_3.5',    label: 'Fija 3,50%',                              tin: 3.5,  tipo: 'fija' },
+  { id: 'fija_3.75',   label: 'Fija 3,75%',                              tin: 3.75, tipo: 'fija' },
+  { id: 'fija_4.0',    label: 'Fija 4,00%',                              tin: 4.0,  tipo: 'fija' },
+  { id: 'fija_4.5',    label: 'Fija 4,50%',                              tin: 4.5,  tipo: 'fija' },
+  { id: 'variable_075',label: 'Variable Euríbor + 0,75%',                tin: null, tipo: 'variable', diff: 0.75 },
+  { id: 'variable_090',label: 'Variable Euríbor + 0,90%',                tin: null, tipo: 'variable', diff: 0.90 },
+  { id: 'variable_100',label: 'Variable Euríbor + 1,00%',                tin: null, tipo: 'variable', diff: 1.00 },
+  { id: 'mixta_10_35', label: 'Mixta 10a fijo 3,50% / Euríbor+0,90%',   tin: 3.5,  tipo: 'mixta', mesesFijo: 120, diff: 0.90 },
+  { id: 'mixta_5_30',  label: 'Mixta 5a fijo 3,00% / Euríbor+0,90%',    tin: 3.0,  tipo: 'mixta', mesesFijo: 60,  diff: 0.90 },
+  { id: 'custom',      label: 'Personalizado…',                           tin: null, tipo: 'custom' },
 ]

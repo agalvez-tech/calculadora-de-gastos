@@ -75,11 +75,11 @@ export default function HipotecaPanel({ hip, setHip, precio, hipCalc }) {
       {/* Financiación */}
       <Row cols={3}>
         <Field label="% Financiación" hint={`Máx. recomendado: 80%`}>
-          <SuffixInput type="number" suffix="%" value={pctFinanciacion} min={0} max={100} step={1}
+          <SuffixInput type="number" suffix="%" value={pctFinanciacion || ''} min={0} max={100} step={1}
             onChange={e => handlePct(e.target.value)} />
         </Field>
         <Field label="Capital a financiar (€)">
-          <Input type="number" value={capital} min={0} max={precio} step={1000}
+          <Input type="number" value={capital || ''} min={0} max={precio} step={1000}
             onChange={e => handleCapital(e.target.value)} />
         </Field>
         <Field label="Entrada necesaria (€)">

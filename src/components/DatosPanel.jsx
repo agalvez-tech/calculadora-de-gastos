@@ -12,8 +12,8 @@ export default function DatosPanel({ state, onChange }) {
         <SectionTitle icon="🏠">Datos de la operación</SectionTitle>
         <Row cols={2}>
           <Field label="Precio de compra (€)">
-            <Input type="number" value={precio} min={0} step={1000}
-              onChange={e => set('precio', parseFloat(e.target.value) || 0)} />
+            <Input type="number" value={precio || ''} min={0} step={1000}
+              onChange={e => set('precio', parseFloat(e.target.value) || 0)} placeholder="Introduce el precio" />
           </Field>
           <Field label="Tipo de vivienda">
             <Select value={tipoViv} onChange={e => set('tipoViv', e.target.value)}>

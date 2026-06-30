@@ -12,6 +12,7 @@ import {
   BreakdownTable,
   AlertBox,
   PrimaryButton,
+  DownloadButton,
 } from './components.jsx'
 
 const PLAZOS = [15, 20, 25, 30]
@@ -31,6 +32,7 @@ export default function GastosHipoteca() {
   const [plazoHip, setPlazoHip] = useState(25)
 
   const [resultado, setResultado] = useState(null)
+  const [descargando, setDescargando] = useState(false)
 
   function calcular() {
     const p = parseFloat(precio) || 0
@@ -53,7 +55,32 @@ export default function GastosHipoteca() {
       }
     }
 
-    setResultado({ precio: p, gastos, honorarios, totalComprador, hipoteca })
+    setResultado({ precio: p, gastos, honorarios, totalComprador, hipoteca, tipoInmueble, ltv, tin, plazoHip })
+  }
+
+  async function descargarDocumento() {
+    if (!resultado) return
+    setDescargando(true)
+    try {
+      const { generarDocxGastos, descargarBlob } = await import('./docxGenerator.js')
+      const tipoLabel = resultado.tipoInmueble === 'segunda' ? 'Segunda mano' : 'Obra nueva'
+      const blob = await generarDocxGastos({
+        precio: resultado.precio,
+        tipoLabel,
+        gastos: resultado.gastos,
+        honorarios: resultado.honorarios,
+        totalComprador: resultado.totalComprador,
+        hipoteca: resultado.hipoteca,
+        ltv: resultado.ltv,
+        tin: resultado.tin,
+        plazoHip: resultado.plazoHip,
+        fmt,
+        fmtPct,
+      })
+      descargarBlob(blob, `RK_Gastos_Compra_${Math.round(resultado.precio)}.docx`)
+    } finally {
+      setDescargando(false)
+    }
   }
 
   return (
@@ -156,6 +183,12 @@ export default function GastosHipoteca() {
           <AlertBox>
             ⚠️ Calculadora orientativa. Las bonificaciones del ITP requieren cumplir los requisitos documentales exigidos por la Generalitat Valenciana (carnet de familia numerosa, certificado de discapacidad, etc.). El registro de la propiedad se estima en 600 € a falta de los datos exactos de la finca.
           </AlertBox>
+
+          <div style={{ textAlign: 'center', marginTop: 20 }}>
+            <DownloadButton onClick={descargarDocumento} loading={descargando}>
+              Descargar documento para el comprador (.docx)
+            </DownloadButton>
+          </div>
         </div>
       )}
     </div>

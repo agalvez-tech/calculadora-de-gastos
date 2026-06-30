@@ -12,6 +12,7 @@ import {
   BreakdownTable,
   AlertBox,
   PrimaryButton,
+  DownloadButton,
 } from './components.jsx'
 
 const PLAZOS = [15, 20, 25, 30]
@@ -42,6 +43,7 @@ export default function RentabilidadAlquiler() {
   const [plazoHip, setPlazoHip] = useState(25)
 
   const [resultado, setResultado] = useState(null)
+  const [descargando, setDescargando] = useState(false)
 
   function n(v) {
     return parseFloat(v) || 0
@@ -117,6 +119,25 @@ export default function RentabilidadAlquiler() {
       irpf,
       netoTrasIRPF,
     })
+  }
+
+  async function descargarDocumento() {
+    if (!resultado) return
+    setDescargando(true)
+    try {
+      const { generarDocxRentabilidad, descargarBlob } = await import('./docxGenerator.js')
+      const blob = await generarDocxRentabilidad({
+        r: resultado,
+        ltv,
+        tin,
+        plazoHip,
+        fmt,
+        fmtPct,
+      })
+      descargarBlob(blob, `RK_Rentabilidad_Inversor_${Math.round(resultado.precio)}.docx`)
+    } finally {
+      setDescargando(false)
+    }
   }
 
   return (
@@ -289,6 +310,12 @@ export default function RentabilidadAlquiler() {
           <AlertBox>
             ⚠️ Calculadora orientativa. La rentabilidad real depende de vacantes, derramas, evolución de mercado y situación fiscal individual. Recomendamos complementar con asesoramiento profesional.
           </AlertBox>
+
+          <div style={{ textAlign: 'center', marginTop: 20 }}>
+            <DownloadButton onClick={descargarDocumento} loading={descargando}>
+              Descargar documento para el inversor (.docx)
+            </DownloadButton>
+          </div>
         </div>
       )}
     </div>

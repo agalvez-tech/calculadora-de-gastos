@@ -251,3 +251,35 @@ export function PrimaryButton({ onClick, children }) {
     </div>
   )
 }
+
+export function DownloadButton({ onClick, loading, children }) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={loading}
+      style={{
+        background: '#fff',
+        color: '#111',
+        border: '1.5px solid #111',
+        padding: '10px 22px',
+        borderRadius: 'var(--radius)',
+        fontSize: 12,
+        fontWeight: 700,
+        fontFamily: 'Montserrat, sans-serif',
+        letterSpacing: 0.5,
+        textTransform: 'uppercase',
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 8,
+        opacity: loading ? 0.6 : 1,
+      }}
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+        <polyline points="7 10 12 15 17 10" />
+        <line x1="12" y1="15" x2="12" y2="3" />
+      </svg>
+      {loading ? 'Generando…' : children}
+    </button>
+  )
+}
